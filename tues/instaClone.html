@@ -18,14 +18,14 @@
         text-align: center;
         position: fixed;
         top: 5px;
-        z-index: 2;
+        z-index: 2
       }
 
 
       .logo-container {
         text-align: center;
         color: white;
-        margin-top: 2.5px;
+        margin-top: 0.5%;
       }
 
       .fa {
@@ -40,6 +40,7 @@
 
       .title {
         text-align: center;
+        margin-top: 1%;
       }
 
       .title h2 {
@@ -50,20 +51,79 @@
         float: left;
         margin-left: 5%;
         margin-right: 2%;
-        width: 30%;
+        width: 20%;
         height: auto;
         border-radius: 50%;
       }
 
       .profilePic {
-        margin-top: 15%;
+        margin-top: 10%;
+        border: 1px solid black;
+        border-radius: 5%;
+        justify-content: center;
       }
 
       .profilePic * {
         display: inline-block;
       }
 
+      .profilePic h2 {
+        margin-top: 5%;
+        margin-left: 1%;
+      }
 
+      .profilePic button {
+        background-color: #308DEE;
+        color: white;
+        padding-top: 1%;
+        font-size: 18px;
+      }
+
+      .profilePic p {
+        font-size: 1.5em;
+        margin: 1% 1% 0 3%;
+        display: inline-block;
+      }
+
+      .gallery {
+        border: 1px solid black;
+        margin-top: 5%;
+      }
+
+      .gallery .thumbnail{
+        width: 400px;
+        height: auto;
+        overflow: hidden;
+        margin: 1% 1% 1% 5%;
+        display: inline-block;
+      }
+
+      .gallery .thumbnail img {
+        width: 100%;
+        display: inline-block;
+      }
+
+
+      @media (max-width: 767.98px){
+        .profilePic {
+          margin-top: 17%;
+          text-align: center;
+        }
+
+        .profilePic h2 {
+          font-size: 16px;
+          margin-right: 0;
+        }
+
+        .profilePic button {
+          font-size: 0.5em;
+        }
+
+        .profilePic img {
+          margin-top: 3%;
+          width: 25%;
+        }
+      }
 
     </style>
   </head>
@@ -85,8 +145,9 @@
         <div class="row">
           <div class="col-12 profilePic">
             <img src="https://i.imgur.com/F3heK3p.jpg" alt="African-American man smiling with Golden Gate bridge in backgroundd">
-            <h2>TheBroterFromASouthernMother</h2>
+            <h2>TheBrotherFromASouthernMother</h2>
             <button type="button" name="Follow"> Follow </button>
+            <br>
             <p># posts</p>
             <p># followers</p>
             <p># following</p>
@@ -96,7 +157,8 @@
 
 
       <div class="container gallery">
-
+        <div class="row">
+        </div>
       </div>
 
 
@@ -108,5 +170,61 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+      var row = document.getElementsByClassName('gallery')[0]
+      var imageLinks = [
+      'https://i.imgur.com/FxhIuEz.jpg',
+      'https://i.imgur.com/YDK9EWD.jpg',
+      'https://i.imgur.com/m5SJiYH.jpg',
+      'https://i.imgur.com/hp23VUn.jpg',
+      'https://i.imgur.com/dVx6DN4.jpg',
+      'https://i.imgur.com/qf3fIhd.jpg',
+      'https://i.imgur.com/mrYWLK9.jpg',
+      'https://i.imgur.com/OvKod3d.jpg',
+      'https://i.imgur.com/bqNUxwn.jpg',
+      'https://i.imgur.com/3WoTNpB.jpg',
+      'https://i.imgur.com/Uue3ccx.jpg',
+      'https://i.imgur.com/O8IvFcn.jpg',
+      'https://i.imgur.com/VdXG1ds.jpg',
+      'https://i.imgur.com/nj6uCqz.jpg',
+      'https://i.imgur.com/tkTabnU.jpg',
+      'https://i.imgur.com/FnOeifn.jpg',
+      'https://i.imgur.com/3Cc3ETZ.jpg',
+      'https://i.imgur.com/7yD4q4O.jpg'
+    ]
+
+      for (var i = 0; i < imageLinks.length; i ++ ) {
+        var element = document.createElement('div');
+        var currentImage = document.createElement('img');
+        currentImage.classList.add('currentImage');
+        element.classList.add("col-3");
+        element.classList.add('thumbnail')
+        row.appendChild(element)
+        element.appendChild(currentImage)
+      }
+
+    var thumbnailDivs = document.getElementsByClassName('thumbnail')
+    var oneThumbnail = thumbnailDivs[0].querySelectorAll('img');
+
+    for (var i = 0; i < imageLinks.length; i ++) {
+      var thumbnail = thumbnailDivs[i].getElementsByClassName('currentImage')[0]
+      thumbnail.src = imageLinks[i]
+    }
+
+    function userSelector(arr) {
+      for (var i = 0; i < arr.length; i ++) {
+        arr[i].addEventListener('mouseover', function(e) {
+          e.target.style.opacity = "0.5"
+        })
+        arr[i].addEventListener('mouseout', function(e) {
+          e.target.style.opacity = "1"
+        })
+      }
+    }
+
+    userSelector(thumbnailDivs)
+
+    </script>
   </body>
 </html>
