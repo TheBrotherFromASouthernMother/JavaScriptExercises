@@ -103,6 +103,34 @@
         display: inline-block;
       }
 
+      .modal {
+        z-index: 5;
+        background-color: rgba(27, 25, 25, 0.7);
+        position: fixed;
+        top: 30%;
+        left: 10%;
+        width: 50%;
+        height: 50%;
+        border: 1px solid black;
+        display:none;
+        overflow: hidden;
+      }
+
+      #modal-image {
+        padding: 5%;
+        width: 100%;
+        float:left;
+        display: inline-block;
+        margin: 5%;
+
+      }
+
+      .fa-close {
+        position: absolute;
+        top: 2%;
+        left: 2%;
+      }
+
 
       @media (max-width: 767.98px){
         .profilePic {
@@ -167,12 +195,24 @@
       </div>
 
 
+      <div class="container modal">
+          <div class="row">
+            <div class="col-12">
+              <img src="" alt="" id='modal-image'>
+              <i class="fa fa-close"></i>
+
+            </div>
+          </div>
+      </div>
+
+
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
     <script type="text/javascript">
       var row = document.getElementsByClassName('gallery')[0]
+      var thumbnailDivs;
       var imageLinks = [
       'https://i.imgur.com/FxhIuEz.jpg',
       'https://i.imgur.com/YDK9EWD.jpg',
@@ -194,33 +234,56 @@
       'https://i.imgur.com/7yD4q4O.jpg'
     ]
 
-      for (var i = 0; i < imageLinks.length; i ++ ) {
-        var element = document.createElement('div');
-        var currentImage = document.createElement('img');
-        currentImage.classList.add('currentImage');
-        element.classList.add("col-3");
-        element.classList.add('thumbnail')
-        row.appendChild(element)
-        element.appendChild(currentImage)
+      function initGallery (array) {
+        for (var i = 0; i < array.length; i ++ ) {
+          var element = document.createElement('div');
+          var currentImage = document.createElement('img');
+          currentImage.classList.add('currentImage');
+          element.classList.add("col-3");
+          element.classList.add('thumbnail')
+          row.appendChild(element)
+          element.appendChild(currentImage)
+        }
+
+        thumbnailDivs = document.getElementsByClassName('thumbnail')
+
+        for (var i = 0; i < imageLinks.length; i ++) {
+          var thumbnail = thumbnailDivs[i].getElementsByClassName('currentImage')[0]
+          thumbnail.src = imageLinks[i]
+        }
       }
 
-    var thumbnailDivs = document.getElementsByClassName('thumbnail')
-    var oneThumbnail = thumbnailDivs[0].querySelectorAll('img');
+      initGallery(imageLinks)
 
-    for (var i = 0; i < imageLinks.length; i ++) {
-      var thumbnail = thumbnailDivs[i].getElementsByClassName('currentImage')[0]
-      thumbnail.src = imageLinks[i]
-    }
+
+      var modal = document.getElementsByClassName('modal')[0];
+
+      var isModalDisplayed = false
+      var closeButton = document.getElementsByClassName('fa-close')[0];
+      var modalImage = document.getElementById('modal-image')
 
     function userSelector(arr) {
       for (var i = 0; i < arr.length; i ++) {
         arr[i].addEventListener('mouseover', function(e) {
-          e.target.style.opacity = "0.5"
+          e.target.style.backgroundColor = "0.5"
         })
         arr[i].addEventListener('mouseout', function(e) {
           e.target.style.opacity = "1"
         })
+
+        arr[i].addEventListener('click', function(e) {
+          isModalDisplayed = true
+          modal.style.display = "block"
+          modalImage.src = e.target.src
+
+        })
       }
+      closeButton.addEventListener('click', function(e) {
+        if (e.target == closeButton && isModalDisplayed == true) {
+            modal.style.display = "none";
+            isModalDisplayed = false
+   }
+      })
     }
 
     userSelector(thumbnailDivs)
