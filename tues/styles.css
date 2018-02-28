@@ -1,0 +1,155 @@
+body {
+  font-family: "Neucha", cursive;
+}
+.pageHeader {
+  background-color: rgba(0,0,0,0.9);
+  color: white;
+  text-align: center;
+  position: fixed;
+  top: 5px;
+  z-index: 2
+}
+
+
+.logo-container {
+  text-align: center;
+  color: white;
+  margin-top: 0.5%;
+}
+
+.fa {
+  color: inherit;
+  font-size: 3em;
+}
+
+.fa:hover {
+  color:white;
+  text-decoration: none;
+}
+
+.title {
+  text-align: center;
+  margin-top: 1%;
+}
+
+.title h2 {
+  font-size: 2.5em;
+}
+
+.profilePic img{
+  float: left;
+  margin-left: 5%;
+  margin-right: 2%;
+  width: 20%;
+  height: auto;
+  border-radius: 50%;
+}
+
+.profilePic {
+  margin-top: 10%;
+  border: 1px solid black;
+  border-radius: 5%;
+  justify-content: center;
+}
+
+.profilePic * {
+  display: inline-block;
+}
+
+.profilePic h2 {
+  margin-top: 5%;
+  margin-left: 1%;
+}
+
+.profilePic button {
+  background-color: #308DEE;
+  color: white;
+  padding-top: 1%;
+  font-size: 18px;
+}
+
+.profilePic p {
+  font-size: 1.5em;
+  margin: 1% 1% 0 3%;
+  display: inline-block;
+}
+
+.gallery {
+  border: 1px solid black;
+  margin-top: 5%;
+}
+
+.gallery .thumbnail{
+  width: 400px;
+  height: auto;
+  overflow: hidden;
+  margin: 1% 1% 1% 5%;
+  display: inline-block;
+}
+
+.gallery .thumbnail img {
+  width: 100%;
+  display: inline-block;
+}
+
+.modal {
+  z-index: 5;
+  background-color: rgba(27, 25, 25, 0.7);
+  position: fixed;
+  top: 30%;
+  left: 10%;
+  width: 50%;
+  height: 50%;
+  border: 1px solid black;
+  display:none;
+  overflow: hidden;
+}
+
+#modal-image {
+  padding: 5%;
+  width: 100%;
+  float:left;
+  display: inline-block;
+  margin: 5%;
+
+}
+
+.fa-close {
+  position: absolute;
+  top: 2%;
+  left: 2%;
+}
+
+.pageFooter {
+  margin-top: 5%;
+  text-align: center;
+  border: 1px solid black;
+  background-color: rgba(0, 0, 0, 0.9);
+  color: white;
+}
+
+.pageFooter h3 {
+  margin-top: 1%;
+}
+
+
+@media (max-width: 767.98px){
+  .profilePic {
+    margin-top: 17%;
+    text-align: center;
+  }
+
+  .profilePic h2 {
+    font-size: 16px;
+    margin-right: 0;
+  }
+
+  .profilePic button {
+    font-size: 0.5em;
+  }
+
+  .profilePic img {
+    margin-top: 3%;
+    width: 25%;
+  }
+}
