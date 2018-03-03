@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <style media="screen">
+         html, body {
+           width: 100%;
+           height: 100%;
+         }
+
+         #table {
+           background-color: #8CE03B;
+           border: 5px solid #5F3700;
+           border-radius: 5%;
+           width: 70%;
+           height: 50%;
+           position: absolute;
+           top: 10%;
+           left: 10%;
+         }
+
+         #dealer-hand {
+           background-color: #478807;
+           width: 70%;
+           height: 100px;
+           margin-bottom: 5%;
+           margin-left: 15%;
+           margin-right: 15%;
+         }
+
+         #player-hand {
+           background-color: #478807;
+           width: 70%;
+           height: 100px;
+           margin-bottom: 5%;
+           margin-left: 15%;
+           margin-right: 15%;
+         }
+
+         .card {
+           width: 50px;
+           margin: 10px 5px 0 5px;
+
+         }
+    </style>
+  </head>
+  <body>
+    <div id="table">
+
+    <div id="messages"></div>
+    <label>Dealer: </label>
+
+    <label id="dealer-points" class="points"></label>
+
+    <div id="dealer-hand" class="hand">
+      <img src="../JPEG/2C.jpg" alt="" class="card">
+    </div>
+
+    <label>Player: </label>
+
+    <label id="player-points" class="points"> </label>
+
+    <div id="player-hand" class="hand">
+
+    </div>
+
+    <div class="buttons">
+
+    <button id="deal-button">Deal</button>
+
+    <button id="hit-button">Hit</button>
+
+    <button id="stand-button">Stand</button>
+
+    </div>
+
+    </div>
+
+    <script type="text/javascript" >
+          //dealer
+          var dealerHand = document.getElementById('dealer-hand');
+          var dealerPoints = document.getElementById('dealer-points')
+          var dealerHandVal = {
+            points: 0
+          }
+
+          //player
+          var playerHand = document.getElementById('player-hand');
+          var playerPoints = document.getElementById('player-points')
+          var playerHandVal = {
+            points: 0
+          }
+
+          var deal = document.getElementById('deal-button');
+          var hit = document.getElementById('hit-button');
+
+          var stand = document.getElementById('stand-button')
+
+          function cardPrototype(points, suit, image = null) {
+            this.points = points;
+            this.suit = suit;
+            this.image = image;
+            this.played = false;
+          }
+
+          var deck = [];
+
+          function fillDeck(arr) {
+            for (var i = 0; i < 4; i ++) {
+              for (var j = 1; j < 14; j ++) {
+                if (i === 0) {
+                  arr.push(new cardPrototype (j, "diamonds", "../JPEG/" + String(j) + "D.jpg"))
+                } else if (i === 1) {
+                    arr.push(new cardPrototype (j, "hearts", "../JPEG/" + String(j) + "H.jpg"))
+                } else if (i === 2) {
+                    arr.push(new cardPrototype (j, "clubs", "../JPEG/" + String(j) + "C.jpg"))
+                } else if (i === 3) {
+                    arr.push(new cardPrototype (j, "spades", "../JPEG/" + String(j) + "S.jpg"))
+                }
+              }
+            }
+          }
+
+          fillDeck(deck)
+
+          var test = document.getElementsByClassName('card')[0];
+          test.src = deck[51].image;
+
+          function addCardToHand(deck, hand, points) {
+            var cardToAdd = deck[Math.floor(Math.random() * Math.floor(deck.length))]
+            if (cardToAdd.played === true) {
+              cardToAdd = deck[Math.floor(Math.random() * Math.floor(deck.length))]
+            } else {
+            cardToAdd.played = true
+            var card = document.createElement('img')
+            card.src = cardToAdd.image;
+            card.classList.add('card')
+            hand.append(card)
+            points.points += cardToAdd.points
+            console.log(points.points)
+            }
+          }
+
+          // addCardToHand(deck, playerHand, playerPoints)
+          hit.addEventListener("click", function() {
+             addCardToHand(deck, playerHand, playerHandVal)
+             addCardToHand(deck, dealerHand, dealerHandVal)
+          })
+          // function initGame() {
+          //   while(playerHandVal < 21 || dealerHandVal < 21) {
+          //
+          //   }
+          // }
+          //
+          // initGame()
+
+    </script>
+  </body>
+
+</html>
