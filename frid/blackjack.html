@@ -79,19 +79,21 @@
     </div>
 
     <script type="text/javascript" >
+
+          var handPrototype = function (name) {
+            this.name = name;
+            this.points = 0;
+            this.cards = [];
+          };
           //dealer
           var dealerHand = document.getElementById('dealer-hand');
-          var dealerPoints = document.getElementById('dealer-points')
-          var dealerHandVal = {
-            points: 0,
-          }
+          var dealerPoints = document.getElementById('dealer-points');
+          var dealerHandVal = new handPrototype("Dealer");
 
           //player
           var playerHand = document.getElementById('player-hand');
           var playerPoints = document.getElementById('player-points')
-          var playerHandVal = {
-            points: 0
-          }
+          var playerHandVal = new handPrototype("Player")
 
           var deal = document.getElementById('deal-button');
           var hit = document.getElementById('hit-button');
@@ -139,10 +141,15 @@
                 cardToAdd = deck[Math.floor(Math.random() * Math.floor(deck.length))]
               }
               var card = document.createElement('img')
-              card.src = cardToAdd.image;
+              if (hand === dealerHand && dealerHandVal.cards.length == 0) {
+                card.src = "../JPEG/blue_back.jpg"
+              } else {
+                  card.src = cardToAdd.image;
+              }
               card.classList.add('card')
               hand.append(card)
-              points.points += cardToAdd.points
+              points.points += cardToAdd.points;
+              points.cards.push(cardToAdd)
               cardToAdd.played = true
               console.log(deck.indexOf(cardToAdd))
               deck.splice(deck.indexOf(cardToAdd), 1)
@@ -151,7 +158,7 @@
 
 
             function endGame(caller, opponent) {
-              window.alert(`You won with ${caller.points} to the dealer's ${opponent.points}`)
+              window.alert(`${caller.name} won with ${caller.points} to the ${opponent.name}'s ${opponent.points}`)
               var playAgain = "";
               while(playAgain != "Y" || playAgain != "N") {
                 playAgain = prompt("Wanna play again? (Y/N)").toUpperCase();
@@ -161,7 +168,7 @@
               }
               if (playAgain == "Y") {
                 location.reload();
-              } else {
+              } else if (playAgain == "N" || playAgain == null) {
                 location.href = "https://www.google.com/"
               }
             }
