@@ -101,12 +101,14 @@
           var stand = document.getElementById('stand-button')
 
 
-
-
           function initGame() {
             var begin = prompt("Wanna play a game?")
             dealerHandVal.points = 0;
             playerHandVal.points = 0;
+
+            var deckPrototype = function() {
+              this.deck = []
+            }
 
             function cardPrototype(points, suit, image = null) {
               this.points = points;
@@ -115,7 +117,7 @@
               this.played = false;
             }
 
-            var deck = [];
+            var deck = new deckPrototype();
 
             function fillDeck(arr) {
               for (var i = 0; i < 4; i ++) {
@@ -132,13 +134,13 @@
                 }
               }
             }
-            fillDeck(deck)
+            fillDeck(deck.deck)
 
 
-            function addCardToHand(deck, hand, points) {
-              var cardToAdd = deck[Math.floor(Math.random() * Math.floor(deck.length))]
+            deckPrototype.prototype.draw = function (hand, points, htmlPoints) {
+              var cardToAdd = this.deck[Math.floor(Math.random() * Math.floor(this.deck.length))]
               while (cardToAdd.played === true) {
-                cardToAdd = deck[Math.floor(Math.random() * Math.floor(deck.length))]
+                cardToAdd = this.deck[Math.floor(Math.random() * Math.floor(this.deck.length))]
               }
               var card = document.createElement('img')
               if (hand === dealerHand && dealerHandVal.cards.length == 0) {
@@ -151,9 +153,13 @@
               points.points += cardToAdd.points;
               points.cards.push(cardToAdd)
               cardToAdd.played = true
-              console.log(deck.indexOf(cardToAdd))
-              deck.splice(deck.indexOf(cardToAdd), 1)
-              console.log(deck.length)
+              htmlPoints.innerHTML = String(points.points);
+              deck.deck.splice(this.deck.indexOf(cardToAdd), 1)
+
+            }
+
+            deckPrototype.prototype.numCardsLeft = function() {
+              console.log(this.deck.length)
             }
 
 
@@ -175,9 +181,9 @@
 
             // addCardToHand(deck, playerHand, playerPoints)
             hit.addEventListener("click", function() {
-               addCardToHand(deck, playerHand, playerHandVal)
-               addCardToHand(deck, dealerHand, dealerHandVal)
-               console.log("hand val:", playerHandVal.points)
+               deck.draw(playerHand, playerHandVal, playerPoints)
+               deck.draw(dealerHand, dealerHandVal, dealerPoints)
+               deck.numCardsLeft();
                if (dealerHandVal.points > 21 || playerHandVal.points === 21) {
                  endGame(playerHandVal, dealerHandVal)
                } else if (dealerHandVal.points === 21 || playerHandVal.points > 21) {
@@ -186,7 +192,7 @@
             })
 
             stand.addEventListener("click", function() {
-              addCardToHand(deck, dealerHand, dealerHandVal);
+              deck.draw(dealerHand, dealerHandVal, dealerPoints);
               if (dealerHandVal.points > 21 || playerHandVal.points === 21) {
                 endGame(playerHandVal, dealerHandVal)
               } else if (dealerHandVal.points === 21 || playerHandVal.points > 21) {
@@ -195,8 +201,8 @@
             })
 
             deal.addEventListener('click', function() {
-              addCardToHand(deck, playerHand, playerHandVal)
-              addCardToHand(deck, dealerHand, dealerHandVal)
+              deck.draw(playerHand, playerHandVal, playerPoints)
+              deck.draw(dealerHand, dealerHandVal, dealerPoints)
             }, {once: true})
 
 
