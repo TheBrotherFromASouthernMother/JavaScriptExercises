@@ -18,6 +18,7 @@
            position: absolute;
            top: 10%;
            left: 10%;
+           margin-top: 20px;
          }
 
          #dealer-hand {
@@ -43,9 +44,29 @@
            margin: 10px 5px 0 5px;
 
          }
+
+         .clockContainer {
+           width: 7%;
+           height: 7%;
+           background-color: #8CE03B;
+           margin-bottom: 20px;
+           color: white;
+           text-align: center;
+           border: 2px solid #5F3700;
+           padding: 5px;
+         }
+
+         .clock {
+           font-size: 2em;
+           color: white;
+         }
     </style>
   </head>
   <body>
+    <div class="clockContainer">
+
+    </div>
+
     <div id="table">
 
     <div id="messages"></div>
@@ -78,6 +99,11 @@
     </div>
 
     <script type="text/javascript" >
+          var clockContainer = document.getElementsByClassName('clockContainer')[0];
+          var clock = document.createElement("h1");
+          clock.classList.add("clock");
+          clockContainer.appendChild(clock)
+
 
           var handPrototype = function (name) {
             this.name = name;
@@ -103,6 +129,9 @@
             dealerHandVal.points = 0;
             playerHandVal.points = 0;
 
+            gameClock = 150;
+
+
             var deckPrototype = function() {
               this.deck = []
             }
@@ -111,26 +140,27 @@
               this.points = points;
               this.suit = suit;
               this.image = image;
+              this.isAce = false;
             }
 
             var deck = new deckPrototype();
 
-            function fillDeck(arr) {
+          deckPrototype.prototype.fillDeck = function () {
               for (var i = 0; i < 4; i ++) {
                 for (var j = 1; j < 14; j ++) {
                   if (i === 0) {
-                    arr.push(new cardPrototype (j, "diamonds", "../JPEG/" + String(j) + "D.jpg"))
+                    this.deck.push(new cardPrototype (j, "diamonds", "../JPEG/" + String(j) + "D.jpg"))
                   } else if (i === 1) {
-                      arr.push(new cardPrototype (j, "hearts", "../JPEG/" + String(j) + "H.jpg"))
+                      this.deck.push(new cardPrototype (j, "hearts", "../JPEG/" + String(j) + "H.jpg"))
                   } else if (i === 2) {
-                      arr.push(new cardPrototype (j, "clubs", "../JPEG/" + String(j) + "C.jpg"))
+                      this.deck.push(new cardPrototype (j, "clubs", "../JPEG/" + String(j) + "C.jpg"))
                   } else if (i === 3) {
-                      arr.push(new cardPrototype (j, "spades", "../JPEG/" + String(j) + "S.jpg"))
+                      this.deck.push(new cardPrototype (j, "spades", "../JPEG/" + String(j) + "S.jpg"))
                   }
                 }
               }
             }
-            fillDeck(deck.deck)
+            deck.fillDeck();
 
 
             deckPrototype.prototype.draw = function (htmlHand, handObject, htmlPoints) {
@@ -140,6 +170,14 @@
                 card.src = "../JPEG/blue_back.jpg"
               } else {
                   card.src = cardToAdd.image;
+              }
+
+              if (cardToAdd.points === 1) {
+                cardToAdd.isAce = true;
+              }
+
+              if (cardToAdd.isAce && handObject.points + 11 < 22) {
+                cardToAdd.points = 11;
               }
               card.classList.add('card')
               htmlHand.append(card)
@@ -156,19 +194,26 @@
 
 
             function endGame(caller, opponent) {
-              window.alert(`${caller.name} won with ${caller.points} to the ${opponent.name}'s ${opponent.points}`)
-              var playAgain = "";
-              while(playAgain != "Y" || playAgain != "N") {
-                playAgain = prompt("Wanna play again? (Y/N)").toUpperCase();
-                if (playAgain == "Y" || playAgain == "N") {
-                  break;
+              if ((caller.points > opponent.points && caller.points < 21 && gameClock === 0) || caller.points === 21 || opponent.points > 21) {
+                window.alert(`${caller.name} won with ${caller.points} to the ${opponent.name}'s ${opponent.points}`)
+                var playAgain = "";
+
+                while(playAgain != "Y" || playAgain != "N") {
+                  playAgain = prompt("Wanna play again? (Y/N)")
+                  if (playAgain == null || playAgain.toUpperCase() == "Y" || playAgain.toUpperCase() == "N") {
+                      break;
+                  }
                 }
+
+                if (playAgain == null || playAgain.toUpperCase() == "N") {
+                  location.href = "https://www.google.com/"
+                } else if (playAgain.toUpperCase() == "Y") {
+                  location.reload();
+                }
+
+
               }
-              if (playAgain == "Y") {
-                location.reload();
-              } else if (playAgain == "N" || playAgain == null) {
-                location.href = "https://www.google.com/"
-              }
+
             }
 
             // addCardToHand(deck, playerHand, playerPoints)
@@ -176,25 +221,30 @@
                deck.draw(playerHand, playerHandVal, playerPoints)
                deck.draw(dealerHand, dealerHandVal, dealerPoints)
                deck.numCardsLeft();
-               if (dealerHandVal.points > 21 || playerHandVal.points === 21) {
-                 endGame(playerHandVal, dealerHandVal)
-               } else if (dealerHandVal.points === 21 || playerHandVal.points > 21) {
-                 endGame(dealerHandVal, playerHandVal)
-               }
-            })
+               endGame(playerHandVal, dealerHandVal)
+               endGame(dealerHandVal, playerHandVal)
+               })
 
             stand.addEventListener("click", function() {
               deck.draw(dealerHand, dealerHandVal, dealerPoints);
-              if (dealerHandVal.points > 21 || playerHandVal.points === 21) {
                 endGame(playerHandVal, dealerHandVal)
-              } else if (dealerHandVal.points === 21 || playerHandVal.points > 21) {
                 endGame(dealerHandVal, playerHandVal)
-              }
             })
+
 
             deal.addEventListener('click', function() {
               deck.draw(playerHand, playerHandVal, playerPoints)
               deck.draw(dealerHand, dealerHandVal, dealerPoints)
+              setInterval(function() {
+                clock.innerHTML = gameClock;
+                if (gameClock > 0) {
+                  gameClock --;
+                } else if (gameClock == 0) {
+                  endGame(playerHandVal, dealerHandVal)
+                  endGame(dealerHandVal, playerHandVal)
+                }
+
+              }, 1000)
             }, {once: true})
 
 
