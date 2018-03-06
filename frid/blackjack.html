@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -97,12 +96,10 @@
 
           var deal = document.getElementById('deal-button');
           var hit = document.getElementById('hit-button');
-
           var stand = document.getElementById('stand-button')
 
 
           function initGame() {
-            var begin = prompt("Wanna play a game?")
             dealerHandVal.points = 0;
             playerHandVal.points = 0;
 
@@ -110,11 +107,10 @@
               this.deck = []
             }
 
-            function cardPrototype(points, suit, image = null) {
+            function cardPrototype(points, suit, image) {
               this.points = points;
               this.suit = suit;
               this.image = image;
-              this.played = false;
             }
 
             var deck = new deckPrototype();
@@ -137,23 +133,19 @@
             fillDeck(deck.deck)
 
 
-            deckPrototype.prototype.draw = function (hand, points, htmlPoints) {
+            deckPrototype.prototype.draw = function (htmlHand, handObject, htmlPoints) {
               var cardToAdd = this.deck[Math.floor(Math.random() * Math.floor(this.deck.length))]
-              while (cardToAdd.played === true) {
-                cardToAdd = this.deck[Math.floor(Math.random() * Math.floor(this.deck.length))]
-              }
               var card = document.createElement('img')
-              if (hand === dealerHand && dealerHandVal.cards.length == 0) {
+              if (htmlHand === dealerHand && dealerHandVal.cards.length == 0) {
                 card.src = "../JPEG/blue_back.jpg"
               } else {
                   card.src = cardToAdd.image;
               }
               card.classList.add('card')
-              hand.append(card)
-              points.points += cardToAdd.points;
-              points.cards.push(cardToAdd)
-              cardToAdd.played = true
-              htmlPoints.innerHTML = String(points.points);
+              htmlHand.append(card)
+              handObject.points += cardToAdd.points;
+              handObject.cards.push(cardToAdd)
+              htmlPoints.innerHTML = String(handObject.points);
               deck.deck.splice(this.deck.indexOf(cardToAdd), 1)
 
             }
